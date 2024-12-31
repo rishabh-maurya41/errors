@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Movate</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    .table-dark {
+      color: #fff;
+      background-color: rgb(0 0 0 / 54%);
+    }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    /* Custom button style */
+    .custom-button {
+      background-color: white; 
+      color: #3a2f2f; 
+      font-weight: bold; 
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      border: none;
+    }
+	.otherClass{
+		width: 60px;
+	}
+	.reasonClass{
+		width: 115px;
+	}
+    .custom-button:hover {
+      background-color: white; 
+      color: black;
+    }
+    .light-blue-bg {
+      height: 70px;
+      background-color: rgb(3, 155, 229);
+      color: rgba(255, 255, 255, 1);
+    }
+	.table-container {
+      max-height: 60vh; /* Set a max height */
+      overflow-y: auto; /* Enable vertical scrolling */
+      // position: relative; /* Make it a positioned element */
+	}
+
+	/*.table thead th {
+	  position: sticky; 
+	  top: 0; 
+	  z-index: 10; 
+	  background-color: #0000008a; 
+	  color: white;
+	}*/
+  </style>
+</head>
+<body>
+<div class="container-fluid">
+  <h3 class="revenueManagementPage" >Revenue Management - 8x8 TAC CR (ETR|EIG-CR-20001)</h3>
+
+  <!-- Row for text and buttons -->
+  <div class="row light-blue-bg revenueManagementPage">
+    <div class="col-6 align-self-center text-white ">
+      <h5  style="font-size: 1.15rem">
+        <span >
+          <span class="font-weight-bold">Start Date : </span>
+          01-Jul-2021	
+        </span>
+        <span >
+          <span class="font-weight-bold">End Date : </span>
+          31-Oct-2024		
+        </span>
+        <span >
+          <span class="font-weight-bold">Project Unit : </span>
+          DES	
+        </span>
+        <span >
+          <span class="font-weight-bold">Currency : </span>
+          USD	
+        </span>
+      </h5>
+    </div>
+    <div class="col-6 text-right">
+      <button type="button" class="mt-2 btn custom-button">Post</button>
+      <button type="button" id="recharge" class="mt-2 btn custom-button">Add Recharge</button>
+	  
+      <button type="button" id="otherExpense" class="mt-2 btn custom-button">Other Expense</button>
+      <button type="button" class="mt-2 btn custom-button" disabled>Recall</button>
+      <button type="button" id="preview" class="mt-2 btn custom-button">Summary</button>
+      <button type="button" class="mt-2 btn custom-button">Save</button>
+      <button type="button" class="mt-2 btn custom-button">Submit</button>
+    </div>
+  </div>
+
+  <!-- Dropdown row with labels -->
+  <div class="row mb-3 revenueManagementPage">
+    <div class="col-12 col-md-2">
+      <div class="form-group">
+        <label for="dropdown1">Billing Type</label>
+        <select id="dropdown1" class="form-control" disabled>
+          <option selected>FTE</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-12 col-md-3">
+      <div class="form-group">
+        <label for="dropdown2">Billing Period</label>
+        <select id="dropdown2" class="form-control">
+          <option selected>01-10-2024 to 31-10-2024</option>
+          <option>01-09-2024 to 30-09-2024</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-12 col-md-2">
+      <div class="form-group">
+        <label for="dropdown3">Action</label>
+        <select id="dropdown3" class="form-control">
+          <option selected>Billing</option>
+          <option>Accrual</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-12 col-md-2">
+      <div class="form-group">
+        <label>&nbsp;</label> <!-- Placeholder to align the button -->
+        <button type="button" class="mt-4 btn custom-button">Show</button>
+      </div>
+    </div>
+    <div class="col-12 col-md-3">
+      <div class="form-group">
+        <label for="dropdown4">Approver Name</label>
+        <select id="dropdown4" class="form-control">
+          <option selected>Sathish Kannan Varadharajan</option>
+          <option>Venkata Rami Reddy Singamareddy</option>
+          <option>Rajasekharan Sankaralingam</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-12 col-md-2">
+      <div class="form-group">
+        <label for="dropdown5">Select Status</label>
+        <select id="dropdown5" class="form-control">
+          <option selected>None</option>
+          <option>New</option>
+          <option>Draft</option>
+          <option>Recall</option>
+          <option>Approved</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-12 col-md-3 align-self-center">
+      <span class="pl-3 ">Total Billable Effort: <span class="font-weight-bold totalBillableEffort">0.000</span> <span class=" font-weight-bold">RMO</span></span>
+    </div>
+    <div class="col-12 col-md-4 align-self-center">
+      <span class="pl-3 ">Total Billable Amount: <span class="font-weight-bold">USD</span> <span class="font-weight-bold totalBillableAmount">0.00</span></span>
+    </div>
+    <div class="col-12 col-md-2 align-self-center">
+      <span class="pl-3 "><span class="font-weight-bold" ><a href=""><u>Import/Export</u></a></span></span>
+    </div>
+  </div>
+  <div class="row mb-3 pl-4 revenueManagementPage">
+	<div class="col-12 col-md-2 align-self-center">
+	  <input class="form-check-input" type="checkbox" value="" id="holidayCheckChecked" checked><span class="pl-1">Is Holiday applicable?</span>
+	</div>
+	<div class="col-12 col-md-2 align-self-center">
+	  <input class="form-check-input" type="checkbox" value="" id="leaveCheckChecked" checked><span class="pl-1">Is Leave applicable?</span>
+	</div>
+	<div class="col-12 col-md-2 align-self-center">
+	  <input class="form-check-input" type="checkbox" value="" id="otCheckChecked" checked><span class="pl-1">Is OT applicable?</span>
+	</div>
+  </div>
+  <div class="table-responsive-sm table-container revenueManagementPage" style="font-size: 12px;">
+    <table id="employeeDataTable" class="table table-bordered table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th class="text-center">Emp Name*</th>
+          <th class="text-center">Emp No</th>
+          <th class="text-center">Emp Type</th>
+          <th class="text-center">Emp Sub Type</th>
+          <th class="text-center">Start Date</th>
+          <th class="text-center">End Date</th>
+          <th class="text-center">Role</th>
+          <th class="text-center">Rate</th>
+          <th class="text-center">UoM</th>
+          <th class="text-center">WBS Element</th>
+          <th class="text-center" style="width:95px;">Billable Effort (Computed)</th>
+          <th class="text-center">Hol (No)</th>
+          <th class="text-center">Leave (No)</th>
+          <th class="text-center">OT (hr)</th>
+          <th class="text-center" style="width:95px;">Other</th>
+          <th class="text-center" style="width:180px;">Reason</th>
+          <th class="text-center">Net Billable Effort</th>
+          <th class="text-center">Billable Amount</th>
+          <th class="text-center">Reference Billable Effort </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Sebastian Oviedo</td>
+          <td>37083</td>
+          <td>Bench</td>
+          <td>Bench Others</td>
+          <td>01-Apr-2024</td>
+          <td>31-Oct-2024</td>
+          <td class="roleClass" >EIR0L1(8*8 CR-L1 Tech Support)</td>
+          <td class="rate">2455.000</td>
+          <td class="umoClass">RMO</td>
+          <td class="wbsClass">ETR|EIG-CR-20001</td>
+		  <td class="pl-3 billableEffort">0</td>
+		  <td class="pl-3 holidayClass">1</td>
+		  <td class="pl-3 leaveClass">0</td>
+		  <td class="pl-3 otClass">0</td>
+          <td><input type="number" class="otherClass" step="0.01" value="0"></td>
+          <td><input type="text" class="reasonClass"></td>
+		   <td class="pl-3 netBillableEffort">0.00</td>
+		  <td><span class="pl-3 billableAmount">0.00</span></td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td>Markcus Santhanraj</td>
+          <td>130102</td>
+          <td>Buffer</td>
+          <td>Buffer Contractual</td>
+          <td>01-Apr-2024</td>
+          <td>31-Oct-2024</td>
+          <td class="roleClass" >EIR0L1(8*8 CR-L1 Tech Support)</td>
+          <td class="rate">2455.000</td>
+          <td class="umoClass">RMO</td>
+          <td class="wbsClass">ETR|EIG-CR-20001</td>
+          <td class="pl-3 billableEffort">0</td>
+		  <td class="pl-3 holidayClass">1</td>
+		  <td class="pl-3 leaveClass">0</td>
+		  <td class="pl-3 otClass">0</td>
+          <td><input type="number" class="otherClass" step="0.01" value="0"></td>
+          <td><input type="text" class="reasonClass"></td>
+		   <td class="pl-3 netBillableEffort">0.00</td>
+		  <td><span class="pl-3 billableAmount">0.00</span></td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td>Sarbjeet Singh Saggu</td>
+          <td>155576</td>
+          <td>Governance</td>
+          <td>Governance Contractual</td>
+          <td>01-Apr-2024</td>
+          <td>31-Oct-2024</td>
+          <td class="roleClass" >EIR0L1(8*8 CR-L1 Tech Support)</td>
+          <td class="rate">2455.000</td>
+          <td class="umoClass">RMO</td>
+          <td class="wbsClass">ETR|EIG-CR-20001</td>
+          <td class="pl-3 billableEffort">0</td>
+		  <td class="pl-3 holidayClass">1</td>
+		  <td class="pl-3 leaveClass">0</td>
+		  <td class="pl-3 otClass">16</td>
+          <td><input type="number" class="otherClass" step="0.01" value="0"></td>
+          <td><input type="text" class="reasonClass"></td>
+		   <td class="pl-3 netBillableEffort">0.00</td>
+		  <td><span class="pl-3 billableAmount">0.00</span></td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td>Marvin Brenes</td>
+          <td>41026</td>
+          <td>Billed</td>
+          <td>Billed</td>
+          <td>01-Apr-2024</td>
+          <td>31-Oct-2024</td>
+          <td class="roleClass" >EIR0L1(8*8 CR-L1 Tech Support)</td>
+          <td class="rate">2455.000</td>
+          <td class="umoClass">RMO</td>
+          <td class="wbsClass">ETR|EIG-CR-20001</td>
+          <td class="pl-3 billableEffort">1</td>
+		  <td class="pl-3 holidayClass">1</td>
+		  <td class="pl-3 leaveClass">1</td>
+		  <td class="pl-3 otClass">0</td>
+          <td><input type="number" class="otherClass" step="0.01" value="0"></td>
+          <td><input type="text" class="reasonClass"></td>
+		   <td class="pl-3 netBillableEffort">0.00</td>
+		  <td><span class="pl-3 billableAmount">0.00</span></td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td>Ariana Sofia Hernandez</td>
+          <td>57263</td>
+          <td>Billed</td>
+          <td>Nesting</td>
+          <td>01-Apr-2024</td>
+          <td>31-Oct-2024</td>
+          <td class="roleClass" >EICR01(DR - LnP Agent)</td>
+          <td class="rate">2500.000</td>
+          <td class="umoClass">RMO</td>
+          <td class="wbsClass">ETR|EIG-CR-20001</td>
+          <td class="pl-3 billableEffort">1</td>
+		  <td class="pl-3 holidayClass">1</td>
+		  <td class="pl-3 leaveClass">2</td>
+		  <td class="pl-3 otClass">20</td>
+          <td><input type="number" class="otherClass" step="0.01" value="0"></td>
+          <td><input type="text" class="reasonClass"></td>
+		   <td class="pl-3 netBillableEffort">0.00</td>
+		  <td><span class="pl-3 billableAmount">0.00</span></td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td>Jennifer Parajeles</td>
+          <td>61703</td>
+          <td>Training</td>
+          <td>Training Others</td>
+          <td>01-Apr-2024</td>
+          <td>01-Oct-2024</td>
+          <td class="roleClass">	EICR02(DR - L1 Agent)</td>
+          <td class="rate">2541.000</td>
+          <td class="umoClass">RMO</td>
+          <td class="wbsClass">ETR|EIG-CR-20001</td>
+          <td class="pl-3 billableEffort">1</td>
+		  <td class="pl-3 holidayClass">1</td>
+		  <td class="pl-3 leaveClass">0</td>
+		  <td class="pl-3 otClass">24</td>
+          <td><input type="number" class="otherClass" step="0.01" value="0"></td>
+          <td><input type="text" class="reasonClass"></td>
+		   <td class="pl-3 netBillableEffort">0.00</td>
+		  <td><span class="pl-3 billableAmount">0.00</span></td>
+          <td>1</td>
+        </tr>
+        <tr>	
+          <td>Mariana Hernandez</td>
+          <td>62687</td>
+          <td>Governance</td>
+          <td>Governance Cost Project</td>
+          <td>01-Apr-2024</td>
+          <td>01-Oct-2024</td>
+          <td class="roleClass">EICR02(DR - L1 Agent)</td>
+          <td class="rate">2541.000</td>
+          <td class="umoClass">RMO</td>
+          <td class="wbsClass">ETR|EIG-CR-20001</td>
+          <td class="pl-3 billableEffort">1</td>
+		  <td class="pl-3 holidayClass">1</td>
+		  <td class="pl-3 leaveClass">3</td>
+		  <td class="pl-3 otClass">0</td>
+          <td><input type="number" class="otherClass" step="0.01" value="0"></td>
+          <td><input type="text" class="reasonClass"></td>
+		   <td class="pl-3 netBillableEffort">0.00</td>
+		  <td><span class="pl-3 billableAmount">0.00</span></td>
+          <td>1</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <!-- Modal Structure -->
+  <div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-labelledby="previewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document"> <!-- modal-lg for larger size -->
+      <div class="modal-content"  style="font-size: 14px;">
+        <div class="modal-header" style="background-color: rgb(3, 155, 229); color: white;">
+          <h5 class="modal-title" id="previewModalLabel">Revenue Management Summary</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+			
+			<div class="table-responsive table-container" style="margin-bottom: 20px;">
+				<table class="table table-bordered table-hover">
+				  <thead class="table-dark">
+					<tr>
+						<th class="text-center">Role</th>
+						<th class="text-center">Description</th>
+						<th class="text-center">Rate</th>
+						<th class="text-center">UoM</th>
+						<th class="text-center">WBS Element</th>
+						<th class="text-center">Billable Effort(Computed)</th>
+						<th class="text-center">Holiday</th>
+						<th class="text-center">Leave</th>
+						<th class="text-center">OT</th>
+						<th class="text-center">Other</th>
+						<th class="text-center">Net Billable Effort</th>
+						<th class="text-center">Billable Amount</th>
+					</tr>
+				  </thead>
+				  <tbody id="previewTableBody">
+					<!-- Rows will be populated here by JavaScript -->
+				  </tbody>
+				</table>
+			</div>
+		<div id="itemPreviewTableBodyDiv" class="table-responsive table-container">
+			<table class="table table-bordered table-hover">
+			  <thead class="table-dark">
+				<tr>
+					<th class="text-center">Material</th>
+					<th class="text-center">Description</th>
+					<th class="text-center">Qty</th>
+					<th class="text-center">Rate</th>
+					<th class="text-center">Amount</th>
+				</tr>
+			  </thead>
+			  <tbody id="itemPreviewTableBody">
+				<!-- Rows will be populated here by JavaScript -->
+			  </tbody>
+			</table>
+		</div>	  
+		   <!-- <div class="row mb-3">
+				<div class="col-12 col-md-4 align-self-center">
+					<span class="pl-3 ">Total Billable Effort: <span class="font-weight-bold totalBillableEffort">0.000</span> <span class=" font-weight-bold">HR</span></span>
+				</div>
+				<div class="col-12 col-md-8 align-self-center">
+					<span class="pl-3 ">RMO Total Billable Amount: <span class="font-weight-bold">USD</span> <span class="font-weight-bold totalBillableAmount">0.00</span></span>
+				</div>
+			</div>-->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn custom-button" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal Structure -->
+  <div class="modal fade" id="otherExpenseModal" tabindex="-1" role="dialog" aria-labelledby="previewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document"> <!-- modal-lg for larger size -->
+      <div class="modal-content"  style="font-size: 14px;">
+        <div class="modal-header" style="background-color: rgb(3, 155, 229); color: white;">
+          <h5 class="modal-title" id="previewModalLabel">Other Expense</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+			<h3>This page used to add and display other expenses details for the given project.</h3>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn custom-button" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- next page Structure -->
+  <!-- Row for text and buttons -->
+    <h3 class="iteamManagementPage" style="display:None">Recharge - 8x8 TAC CR (ETR|EIG-CR-20001)</h3>
+
+<div class="row light-blue-bg iteamManagementPage" style="display:None">
+	<div class="col-8 align-self-center text-white ">
+	  <h5>
+		<span class="pl-3 ">
+		  <span class="font-weight-bold">Start Date : </span>
+		  01-Jul-2021	
+		</span>
+		<span class="pl-3 ">
+		  <span class="font-weight-bold">End Date : </span>
+		  31-Oct-2024		
+		</span>
+		<span class="pl-3 ">
+		  <span class="font-weight-bold">Project Unit : </span>
+		  DES	
+		</span>
+		<span class="pl-3 ">
+		  <span class="font-weight-bold">Currency : </span>
+		  USD	
+		</span>
+	  </h5>
+	</div>
+    <div class="col-4 text-right">
+      <button type="button" id="addRowBtn"  class="mt-2 btn custom-button">Add</button>
+      <button type="button" id="close" class="mt-2 btn custom-button">Close</button>
+      <button type="button" id="submit" class="mt-2 btn custom-button">Submit</button>
+    </div>
+</div>
+
+<div class="table-responsive-sm table-container iteamManagementPage" style="display:None">
+    <table id="iteamDataTable" class="table table-bordered table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th class="text-center">Sno</th>
+          <th class="text-center">Material</th>
+          <th class="text-center">Description</th>
+          <th class="text-center">Qty</th>
+          <th class="text-center">Rate</th>
+          <th class="text-center">Amount</th>
+          <th class="text-center">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="iteamManagementPage"  style="display:None" >
+          <td class="sno">1</td>
+          <td>
+			<select id="dropdown4" class="form-control material-class">
+				<option value="RECHARGEABLES">RECHARGEABLES</option>
+				<option value="TRAVEL">TRAVEL</option>
+				<option value="TRAINING">TRAINING</option>
+				<option value="TELECOM">TELECOM</option>
+				<option value="AWARD/INCENTIVES">AWARD/INCENTIVES</option>
+				<option value="C AND F CHARGES">C AND F CHARGES</option>
+				<option value="CUSTOMER ASSETS">CUSTOMER ASSETS</option>
+				<option value="AWS">AWS</option>
+			</select>
+		  </td>
+          <td><input type="text" class="form-control description-class"></td>
+          <td><input type="number" class="form-control qty-class only_numbers" value="1" step="0.01"></td>
+          <td><input type="number" class="form-control rate-class only_numbers" value="1" step="0.01"></td>
+          <td class="amount-class pl-3">1.00</td>
+          <td><button class="btn btn-link text-danger deleteRowBtn"><i class="bi bi-trash"></i></button></td>
+		</tr>		
+       </tbody>
+    </table>
+  </div>
+  
+
+
+
+	<script>
+		$(document).ready(function(){
+			updateBillableEffortAndAmount();
+			updateTotalBillable();
+			$(".only_numbers").on('keypress', function(key) {
+				if((key.charCode < 48 || key.charCode > 57) && key.charCode !== 46) {
+					return false;
+				}
+			});
+			
+			$(".otherClass").keyup(function (e) {
+				let $row = $(this).closest("tr");
+				let other = parseFloat($(this).val()) || 0;
+				
+				var isHolidayChecked = $("#holidayCheckChecked").prop('checked');
+				var isLeaveChecked = $("#leaveCheckChecked").prop('checked');
+				var isOTChecked = $("#otCheckChecked").prop('checked');
+
+				var holiday = 0;
+				if (isHolidayChecked) {
+					holiday = parseFloat($row.find(".holidayClass").text()) || 0;
+				}
+				
+				var leave = 0;
+				if (isLeaveChecked) {
+					leave = parseFloat($row.find(".leaveClass").text()) || 0;
+				}
+				
+				var ot = 0;
+				if (isOTChecked) {
+					ot = parseFloat($row.find(".otClass").text()) || 0;
+				}
+				
+				let billableEffort = parseFloat($row.find(".billableEffort").text()) || 0;
+				let rate = parseFloat($row.find(".rate").text()) || 0;
+					
+				let holidayFinalVal=Math.round((holiday/21 + Number.EPSILON) * 1000) / 1000;
+				let leaveFinalVal=Math.round((leave/21 + Number.EPSILON) * 1000) / 1000;
+				let otFinalVal=Math.round(((ot/8)/21 + Number.EPSILON) * 1000) / 1000;
+				
+				// Calculate Net Billable Effort
+				var netBillableEffort = billableEffort- holidayFinalVal - leaveFinalVal + otFinalVal + other;
+
+				netBillableEffort = (billableEffort>0)?netBillableEffort:0;
+				let billableAmount = (netBillableEffort * rate).toFixed(3);
+				netBillableEffort=netBillableEffort.toFixed(3);
+				$row.find(".billableAmount").text(billableAmount);
+				$row.find(".netBillableEffort").text(netBillableEffort);
+
+				updateTotalBillable();
+			});
+			
+			function updateTotalBillable() {
+				let billableAmount = 0;
+				$(".billableAmount").each(function() {
+					billableAmount += parseFloat($(this).text()) || 0;  
+				});
+				$(".totalBillableAmount").text(billableAmount.toFixed(2));
+
+				let billableEffort = 0;
+				$(".netBillableEffort").each(function() {
+					billableEffort += parseFloat($(this).text()) || 0; 
+				});
+				$(".totalBillableEffort").text(billableEffort.toFixed(3));
+			}
+
+			function updateBillableEffortAndAmount() {
+				// Loop through each row of the table
+				
+					var isHolidayChecked = $("#holidayCheckChecked").prop('checked');
+					var isLeaveChecked = $("#leaveCheckChecked").prop('checked');
+					var isOTChecked = $("#otCheckChecked").prop('checked');
+
+					
+					
+				$('#employeeDataTable  tbody tr').each(function() {
+					// Get the values from the inputs in the row
+					var billableEffort = parseFloat($(this).find('.billableEffort').text()) || 0;
+				
+					var holiday = 0;
+					if (isHolidayChecked) {
+						holiday = parseFloat($(this).find('.holidayClass').text()) || 0;
+					}
+					
+					var leave = 0;
+					if (isLeaveChecked) {
+						leave = parseFloat($(this).find('.leaveClass').text()) || 0;
+					}
+					
+					
+					var ot = 0;
+					if (isOTChecked) {
+						ot = parseFloat($(this).find('.otClass').text()) || 0;
+					}
+					
+					var other = parseFloat($(this).find('.otherClass').val()) || 0;
+					var rate = parseFloat($(this).find('.rate').text()) || 0;
+					// Calculate Net Billable Effort
+					
+					let holidayFinalVal=Math.round((holiday/21 + Number.EPSILON) * 1000) / 1000;
+					let leaveFinalVal=Math.round((leave/21 + Number.EPSILON) * 1000) / 1000;
+					let otFinalVal=Math.round(((ot/8)/21 + Number.EPSILON) * 1000) / 1000;
+					
+					var netBillableEffort = billableEffort- holidayFinalVal - leaveFinalVal + otFinalVal + other;
+					
+					netBillableEffort = (billableEffort>0)?netBillableEffort:0;
+					// Calculate Billable Amount
+					var billableAmount = netBillableEffort * rate;
+					
+					// Set the calculated values back into the table
+					$(this).find('.netBillableEffort').text(netBillableEffort.toFixed(3));  // Net Billable Effort column
+					$(this).find('.billableAmount').text(billableAmount.toFixed(3));  // Billable Amount column
+				});
+			}
+			
+			
+			
+			$("#recharge").click(function() {
+			    $('.revenueManagementPage').toggle();
+			    $('.iteamManagementPage').toggle();
+			});
+			$("#close").click(function() {
+			    $('.revenueManagementPage').toggle();
+			    $('.iteamManagementPage').toggle();
+			});
+			$("#submit").click(function() {
+			    $('.revenueManagementPage').toggle();
+			    $('.iteamManagementPage').toggle();
+			});
+			
+			
+			function updateSerialNumbers() {
+				$('#iteamDataTable tbody tr').each(function (index) {
+					$(this).find('.sno').text(index + 1); // Set Sno column to index + 1
+				});
+			}
+			
+			$(document).on('input', '.qty-class, .rate-class', function () {
+				const row = $(this).closest('tr');
+				const num1 = parseFloat(row.find('.qty-class').val()) || 0;
+				const num2 = parseFloat(row.find('.rate-class').val()) || 0;
+				row.find('.amount-class').text(num1 * num2);
+			});
+
+			// Delete Row Functionality
+			$(document).on('click', '.deleteRowBtn', function () {
+				const rowToDelete = $(this).closest('tr');
+				rowToDelete.remove();
+				// Enable inputs in the new last row, if it exists
+				const lastRow = $('tbody tr:last');
+				if (lastRow.length) {
+				  lastRow.find('input').prop('disabled', false);
+				}
+				// Update serial numbers
+				updateSerialNumbers();
+			});
+
+			// Initialize serial numbers
+			updateSerialNumbers();
+
+			$('#holidayCheckChecked').change(function() {
+				updateBillableEffortAndAmount();
+				updateTotalBillable();
+			});
+			
+			$('#leaveCheckChecked').change(function() {
+				updateBillableEffortAndAmount();
+				updateTotalBillable();
+			});
+			
+			$('#otCheckChecked').change(function() {
+				updateBillableEffortAndAmount();
+				updateTotalBillable();
+			});
+			
+			
+			$("#otherExpense").click(function() {
+			
+				$("#otherExpenseModal").modal('show');
+			});
+			
+			// Handle Preview button click
+			$("#preview").click(function() {
+				let previewTableBody = $("#previewTableBody");
+				previewTableBody.empty(); // Clear previous data
+				
+				
+				let itemPreviewTableBody = $("#itemPreviewTableBody");
+				itemPreviewTableBody.empty(); // Clear previous data
+				
+				
+				// Object to store grouped data
+				let groupedData = {};
+
+				let totalBillableEffort = 0;
+				let totalBillableAmount = 0;
+				
+
+				var isHolidayChecked = $("#holidayCheckChecked").prop('checked');
+				var isLeaveChecked = $("#leaveCheckChecked").prop('checked');
+				var isOTChecked = $("#otCheckChecked").prop('checked');
+				// Iterate over each row in the main table to build grouped data
+				$("#employeeDataTable tbody tr").each(function() {
+					let $row = $(this);
+					let roleText = $row.find(".roleClass").text(); // Get Role text
+					let roleParts = roleText.split('(');
+					let role = roleParts[0].trim(); // Get first part as Role
+					let description = roleParts[1] ? roleParts[1].replace(')', '').trim() : ""; // Get description if available
+
+					let rateText = $row.find(".rate").text(); // Get Rate text
+					let uomText = $row.find(".umoClass").text(); // Get Uom text
+					let wbsElementText = $row.find(".wbsClass").text(); // Get WBS Element text
+
+
+					let billableEffort = parseFloat($row.find(".billableEffort").text()) || 0;
+					
+					var holiday = 0;
+					if (isHolidayChecked) {
+						holiday = parseFloat($row.find(".holidayClass").text()) || 0;
+					}
+					var leave = 0;
+					if (isLeaveChecked) {
+						leave = parseFloat($row.find(".leaveClass").text()) || 0;
+					}
+					var ot = 0;
+					if (isOTChecked) {
+						ot = parseFloat($row.find(".otClass").text()) || 0;
+					}
+					
+					let other = parseFloat($row.find(".otherClass").val()) || 0;
+					
+					let netBillableEffort = parseFloat($row.find(".netBillableEffort").text()) || 0;
+					
+					let billableAmount = parseFloat($row.find(".billableAmount").text()) || 0;
+
+					// Group by role and description
+					let key = role + "|" + description;
+					if (!groupedData[key]) {
+						groupedData[key] = {
+							role: role,
+							description: description,
+							rateText: rateText,
+							uomText: uomText,
+							wbsElementText: wbsElementText,
+							totalBillableEffort: 0,
+							totalholiday: 0,
+							totalleave: 0,
+							totalot: 0,
+							totalother: 0,
+							totalnetBillableEffort: 0,
+							totalBillableAmount: 0,
+						};
+					}
+
+					// Sum up the values for each group
+					groupedData[key].totalBillableEffort += billableEffort;
+					groupedData[key].totalholiday += holiday;
+					groupedData[key].totalleave += leave;
+					groupedData[key].totalot += ot;
+					groupedData[key].totalother += other;
+					groupedData[key].totalnetBillableEffort += netBillableEffort;
+					groupedData[key].totalBillableAmount += billableAmount;
+			
+					// Add to overall totals
+					totalBillableEffort += billableEffort;
+					totalBillableAmount += billableAmount;
+				});
+				
+				// Populate the preview table with grouped data
+				for (let key in groupedData) {
+					let data = groupedData[key];
+					previewTableBody.append(`<tr>
+							<td>${data.role}</td>
+							<td>${data.description}</td>
+							<td>${data.rateText}</td>
+							<td>${data.uomText}</td>
+							<td>${data.wbsElementText}</td>
+							<td>${data.totalBillableEffort.toFixed(3)}</td>
+							<td>${data.totalholiday.toFixed(3)}</td>
+							<td>${data.totalleave.toFixed(3)}</td>
+							<td>${data.totalot.toFixed(3)}</td>
+							<td>${data.totalother.toFixed(3)}</td>
+							<td>${data.totalnetBillableEffort.toFixed(3)}</td>
+							<td>${data.totalBillableAmount.toFixed(2)}</td>
+						</tr>`
+					);
+				}
+				
+				// Append footer row with totals
+				previewTableBody.append(
+					`<tr class="table-footer">
+						<td colspan="11" style="text-align: right;"><strong>Effort Total</strong></td>
+						<!-- <td><strong>${totalBillableEffort.toFixed(3)}</strong></td> -->
+						<td><strong>${totalBillableAmount.toFixed(2)}</strong></td>
+					</tr>`
+				);
+				
+				
+				// Object to store iteam data
+				let iteamData = [];
+				let i=0;
+				let itemQtyTotal=0
+				let itemRateTotal=0
+				let itemAmountTotal=0
+				$("#iteamDataTable tbody tr").each(function() {
+					let $row = $(this);
+					let itemMaterial = $row.find(".material-class").val() || "";
+					let itemDescription = $row.find(".description-class").val() || "";
+					let itemQty = parseFloat($row.find(".qty-class").val()) || 0;
+					let itemRate = parseFloat($row.find(".rate-class").val()) || 0;
+					let itemAmount  = parseFloat($row.find(".amount-class").text()) || 0;
+					if(itemMaterial!="" && itemDescription !=""){
+						let temp = {
+							itemMaterial: itemMaterial,
+							itemDescription: itemDescription,
+							itemQty: itemQty,
+							itemRate: itemRate,
+							itemAmount: itemAmount
+						};
+						iteamData.push(temp);
+					}
+					
+					// Add to overall totals
+					itemQtyTotal += itemQty;
+					itemRateTotal += itemRate;
+					itemAmountTotal += itemAmount;
+				});
+
+				// Populate the preview table with Iteam data
+				if(iteamData.length>0){
+				
+					$('#itemPreviewTableBodyDiv').show();
+					
+					for (let j in iteamData) {
+						let data = iteamData[j];
+						itemPreviewTableBody.append(`<tr>
+								<td>${data.itemMaterial}</td>
+								<td>${data.itemDescription}</td>
+								<td>${data.itemQty.toFixed(3)}</td>
+								<td>${data.itemRate.toFixed(3)}</td>
+								<td>${data.itemAmount.toFixed(3)}</td>
+							</tr>`
+						);
+					}
+					totalAmount=totalBillableAmount+itemAmountTotal
+					// Append footer row with totals
+					itemPreviewTableBody.append(
+						`<tr class="table-footer">
+							<td colspan="4" style="text-align: right;"><strong>Item Total</strong></td>
+							<!-- <td><strong>${totalBillableEffort.toFixed(3)}</strong></td> -->
+							<td><strong>${itemAmountTotal.toFixed(2)}</strong></td>
+						</tr>`
+					);
+					itemPreviewTableBody.append(
+						`<tr class="table-footer">
+							<td colspan="4" style="text-align: right;"><strong>Total Amount</strong></td>
+							<!-- <td><strong>${totalBillableEffort.toFixed(3)}</strong></td> -->
+							<td><strong>${totalAmount.toFixed(2)}</strong></td>
+						</tr>`
+					);
+					
+				}else{
+					$('#itemPreviewTableBodyDiv').hide();
+				}
+
+
+				// Show the modal
+				$("#previewModal").modal('show');
+			});
+			
+			
+			// Add Row Functionality
+			$('#addRowBtn').on('click', function () {
+				const lastRow = $('tbody tr:last');
+				const allFilled = lastRow.find('input').toArray().every(input => $(input).val() !== "");
+
+				if (allFilled) {
+				  // Disable inputs in the last row
+				  lastRow.find('input').prop('disabled', true);
+				  lastRow.find('select').prop('disabled', true);
+
+				  // Add new row
+				  const newRow = `
+					<tr class="iteamManagementPage">
+					  <td class="sno"></td>
+					  <td>
+					    <select id="dropdown4" class="form-control material-class">
+							<option value="RECHARGEABLES">RECHARGEABLES</option>
+							<option value="TRAVEL">TRAVEL</option>
+							<option value="TRAINING">TRAINING</option>
+							<option value="TELECOM">TELECOM</option>
+							<option value="AWARD/INCENTIVES">AWARD/INCENTIVES</option>
+							<option value="C AND F CHARGES">C AND F CHARGES</option>
+							<option value="CUSTOMER ASSETS">CUSTOMER ASSETS</option>
+							<option value="AWS">AWS</option>
+						</select>
+					  </td>
+					  <td><input type="text" class="form-control description-class"></td>
+					  <td><input type="number" class="form-control qty-class only_numbers" value="1"  ></td>
+					  <td><input type="number" class="form-control rate-class only_numbers" value="1"  ></td>
+					  <td class="amount-class pl-3">1.00</td>
+					  <td><button class="btn btn-link text-danger deleteRowBtn"><i class="bi bi-trash"></i></button></td>
+					</tr>`;
+				  $('tbody').append(newRow);
+
+				  // Update serial numbers
+				  updateSerialNumbers();
+				} else {
+				  alert('Please fill all fields in the previous row before adding a new row.');
+				}
+			});
+		});
+	</script>
+</div>
+</body>
+</html>
